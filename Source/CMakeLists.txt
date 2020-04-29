@@ -100,8 +100,8 @@ string(REPLACE " " ";" EXTERN_EVENT_LIST "${EXTERN_EVENTS}")
 message("-- Assuming external events: ${EXTERN_EVENT_LIST}")
 
 #FIXME: We shouldn't touch cflags...
-if(TEST_MEASUREMENTS)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+if(BUILD_TESTS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -fkeep-inline-functions -fkeep-static-functions")
     set(CMAKE_EXE_LINKER_FLAGS -lgcov)
 endif ()
 
