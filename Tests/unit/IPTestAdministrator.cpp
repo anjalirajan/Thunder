@@ -32,6 +32,13 @@ extern "C" void __gcov_flush();
 #endif
 
 
+// TODO: What is going on here??
+//  https://github.com/google/googletest/issues/2328
+#include <cxxabi.h>
+__gnu_cxx::recursive_init_error::~recursive_init_error()
+{
+}
+
 const uint32_t g_maxTimeOut = 2; // In seconds.
 
 IPTestAdministrator::IPTestAdministrator(OtherSideMain otherSideMain)
@@ -65,10 +72,14 @@ IPTestAdministrator::IPTestAdministrator(OtherSideMain otherSideMain)
       //WPEFramework::Core::Singleton::Dispose();
 
       // Make sure no gtest cleanup code is called (summary etc).
+<<<<<<< HEAD
       #ifdef WITH_CODE_COVERAGE
       __gcov_flush();
       #endif
 
+=======
+      //__gcov_flush();
+>>>>>>> 9440cc04... [TESTS] Updates tests for qemu VM run
       abort();
    } else {
       // In parent process, store child pid, so we can kill it later.
