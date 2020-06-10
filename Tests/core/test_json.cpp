@@ -108,6 +108,45 @@ public:
     CommandParameters F;
 };
 
+class TestRequest : public WPEFramework::Core::JSON::Container {
+public:
+    TestRequest(const TestRequest&) = delete;
+    TestRequest& operator=(const TestRequest&) = delete;
+
+public:
+    TestRequest()
+        : Core::JSON::Container()
+        , J()
+    {
+        Add(_T("j"), &J);
+    }
+
+    ~TestRequest()
+    {
+    }
+
+public:
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::String> J;
+};
+
+TEST(Core_JSON, StringArrayWithSquareBrackets)
+{
+    string input = R"({"j":["aa"]})";
+    string inputRequired = R"({"j":["aa"]})";
+    string output;
+
+    WPEFramework::Core::ProxyType<TestRequest> command = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    command->J.Add(WPEFramework::Core::JSON::String("aa", true));
+    WPEFramework::Core::JSON::Tester<1, TestRequest> parser;
+    //ToString
+    parser.ToString(command, output);
+    ASSERT_STREQ(inputRequired.c_str(), output.c_str());
+
+    //FromString
+    WPEFramework::Core::ProxyType<TestRequest> received = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    parser.FromString(input, received);
+}
+
 TEST(Core_JSON, simpleSet)
 {
     {
