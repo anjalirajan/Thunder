@@ -401,8 +401,18 @@ namespace Tests {
         data.keyToPutInJson = "\"" + data.key + "\"";
         data.value = "value";
         data.valueToPutInJson = data.value + "\"";
-        ExecutePrimitiveJsonTest<Core::JSON::String>(data, false, [](const Core::JSON::String& v) {
+
+        #ifndef QUIRKS_MODE
+        const bool expected = false;
+        #else
+        const bool expected = true;
+        #endif
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, expected, [&data](const Core::JSON::String& v) {
+        #ifndef QUIRKS_MODE
             EXPECT_EQ(string{}, v.Value());
+        #else
+            EXPECT_EQ(data.value + "\"", v.Value());
+        #endif
         });
     }
 
@@ -568,14 +578,24 @@ namespace Tests {
         });
     }
 
-    // FIXME: Parser does not support floating points.
+    TEST(JSONParser, FloatingPointNumber)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "1.34";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [data](const Core::JSON::String& v) {
+           EXPECT_EQ(data.value, v.Value());
+        });
+    }
 
     TEST(JSONParser, StringWithEscapeChars)
     {
         TestData data;
         data.key = "key";
         data.keyToPutInJson = "\"" + data.key + "\"";
-        const char rawUnescaped[] = { 'v', 'a', 'l', 'u', 'e', ' ', '\\', '"', '\b', '\n', '\f', '\r', '\\', 'u', '0', '0', 'b', '1', '/', '\\', '\0' };
+        const char rawUnescaped[] = { 'v', 'a', 'l', 'u', 'e', ' ', '"', '\b', '\n', '\f', '\r', '\\', 'u', '0', '0', 'b', '1', '/', '\\', '\0' };
         data.value = "value \\\"\\b\\n\\f\\r\\u00b1\\/\\\\";
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [rawUnescaped](const Core::JSON::String& v) {

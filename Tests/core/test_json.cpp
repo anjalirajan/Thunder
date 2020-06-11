@@ -117,8 +117,22 @@ public:
     TestRequest()
         : Core::JSON::Container()
         , J()
+        , K()
+        , L()
+        , M()
+        , N()
+        , O()
+        , P()
+        , Q()
     {
         Add(_T("j"), &J);
+        Add(_T("k"), &K);
+        Add(_T("l"), &L);
+        Add(_T("m"), &M);
+        Add(_T("n"), &N);
+        Add(_T("o"), &O);
+        Add(_T("p"), &P);
+        Add(_T("q"), &Q);
     }
 
     ~TestRequest()
@@ -126,18 +140,142 @@ public:
     }
 
 public:
-    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::String> J;
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::DecUInt16> J;
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::DecSInt16> K;
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::String> L;
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::HexUInt32> M;
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::HexSInt32> N;
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::Boolean> O;
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::OctUInt16> P;
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::OctSInt16> Q;
 };
 
-TEST(Core_JSON, StringArrayWithSquareBrackets)
+TEST(Core_JSON, DecUInt16ArrayWithSquareBrackets)
 {
-    string input = R"({"j":["aa"]})";
-    string inputRequired = R"({"j":["aa"]})";
+    string input = R"({"j":[12]})";
+    string inputRequired = R"({"j":[12]})";
     string output;
 
     WPEFramework::Core::ProxyType<TestRequest> command = WPEFramework::Core::ProxyType<TestRequest>::Create();
-    command->J.Add(WPEFramework::Core::JSON::String("aa", true));
+    command->J.Add(WPEFramework::Core::JSON::DecUInt16(12, true));
     WPEFramework::Core::JSON::Tester<1, TestRequest> parser;
+
+    //ToString
+    parser.ToString(command, output);
+    ASSERT_STREQ(inputRequired.c_str(), output.c_str());
+
+    //FromString
+    WPEFramework::Core::ProxyType<TestRequest> received = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    parser.FromString(input, received);
+}
+
+TEST(Core_JSON, DecSInt16ArrayWithSquareBrackets)
+{
+    string input = R"({"k":[-12]})";
+    string inputRequired = R"({"k":[-12]})";
+    string output;
+
+    WPEFramework::Core::ProxyType<TestRequest> command = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    command->K.Add(WPEFramework::Core::JSON::DecSInt16(-12, true));
+    WPEFramework::Core::JSON::Tester<1, TestRequest> parser;
+
+    //ToString
+    parser.ToString(command, output);
+    ASSERT_STREQ(inputRequired.c_str(), output.c_str());
+
+    //FromString
+    WPEFramework::Core::ProxyType<TestRequest> received = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    parser.FromString(input, received);
+}
+
+TEST(DISABLED_Core_JSON, StringArrayWithSquareBrackets)
+{
+    string input = R"({"l":["Test"]})";
+    string inputRequired = R"({"l":["Test"]})";
+    string output;
+
+    WPEFramework::Core::ProxyType<TestRequest> command = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    WPEFramework::Core::JSON::String str;
+    str = string("Test");
+    command->L.Add(str);
+    WPEFramework::Core::JSON::Tester<1, TestRequest> parser;
+
+    //ToString
+    parser.ToString(command, output);
+    ASSERT_STREQ(inputRequired.c_str(), output.c_str());
+
+    //FromString
+    WPEFramework::Core::ProxyType<TestRequest> received = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    parser.FromString(input, received);
+}
+
+TEST(DISABLED_Core_JSON, HexUInt32ArrayWithSquareBrackets)
+{
+    string input = R"({"m":["0x8"]})";
+    string inputRequired = R"({"m":["0x8"]})";
+    string output;
+
+    WPEFramework::Core::ProxyType<TestRequest> command = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    command->M.Add(WPEFramework::Core::JSON::HexUInt32(8, true));
+    WPEFramework::Core::JSON::Tester<1, TestRequest> parser;
+
+    //ToString
+    parser.ToString(command, output);
+    ASSERT_STREQ(inputRequired.c_str(), output.c_str());
+
+    //FromString
+    WPEFramework::Core::ProxyType<TestRequest> received = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    parser.FromString(input, received);
+}
+
+TEST(DISABLED_Core_JSON, HexSInt32ArrayWithSquareBrackets)
+{
+    string input = R"({"n":["-0x8"]})";
+    string inputRequired = R"({"n":["-0x8"]})";
+    string output;
+
+    WPEFramework::Core::ProxyType<TestRequest> command = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    command->N.Add(WPEFramework::Core::JSON::HexSInt32(-8, true));
+    WPEFramework::Core::JSON::Tester<1, TestRequest> parser;
+
+    //ToString
+    parser.ToString(command, output);
+    ASSERT_STREQ(inputRequired.c_str(), output.c_str());
+
+    //FromString
+    WPEFramework::Core::ProxyType<TestRequest> received = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    parser.FromString(input, received);
+}
+
+TEST(DISABLED_Core_JSON, OctUInt16ArrayWithSquareBrackets)
+{
+    string input = R"({"p":["014"]})";
+    string inputRequired = R"({"p":["014"]})";
+    string output;
+
+    WPEFramework::Core::ProxyType<TestRequest> command = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    command->P.Add(WPEFramework::Core::JSON::OctUInt16(12, true));
+    WPEFramework::Core::JSON::Tester<1, TestRequest> parser;
+
+    //ToString
+    parser.ToString(command, output);
+    ASSERT_STREQ(inputRequired.c_str(), output.c_str());
+
+    //FromString
+    WPEFramework::Core::ProxyType<TestRequest> received = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    parser.FromString(input, received);
+}
+
+TEST(DISABLED_Core_JSON, OctSInt16ArrayWithSquareBrackets)
+{
+    string input = R"({"q":["-014"]})";
+    string inputRequired = R"({"q":["-014"]})";
+    string output;
+
+    WPEFramework::Core::ProxyType<TestRequest> command = WPEFramework::Core::ProxyType<TestRequest>::Create();
+    command->Q.Add(WPEFramework::Core::JSON::OctSInt16(-12, true));
+    WPEFramework::Core::JSON::Tester<1, TestRequest> parser;
+
     //ToString
     parser.ToString(command, output);
     ASSERT_STREQ(inputRequired.c_str(), output.c_str());
@@ -167,9 +305,11 @@ TEST(Core_JSON, simpleSet)
         command->F.J.Add(WPEFramework::Core::JSON::DecUInt16(14, true));
         command->F.J.Add(WPEFramework::Core::JSON::DecUInt16(22, true));
         WPEFramework::Core::JSON::Tester<1, CommandRequest> parser;
+
         //ToString
         parser.ToString(command, output);
         ASSERT_STREQ(inputRequired.c_str(), output.c_str());
+
         //FromString
         WPEFramework::Core::ProxyType<CommandRequest> received = WPEFramework::Core::ProxyType<CommandRequest>::Create();
         parser.FromString(input, received);
