@@ -24,8 +24,6 @@
 
 #include "JSON.h"
 
-#define QUIRKS_MODE
-
 namespace WPEFramework {
 namespace Tests {
 
@@ -366,19 +364,8 @@ namespace Tests {
         data.keyToPutInJson = "\"" + data.key + "\"";
         data.value = "value";
         data.valueToPutInJson = data.value;
-        const bool expected =
-        #ifdef QUIRKS_MODE
-        true
-        #else
-        false
-        #endif
-        ;
-        ExecutePrimitiveJsonTest<Core::JSON::String>(data, expected, [&data](const Core::JSON::String& v) {
-            #ifdef QUIRKS_MODE
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
             EXPECT_EQ(data.value, v.Value());
-            #else
-            EXPECT_EQ(string{}, v.Value());
-            #endif
         });
     }
 
@@ -561,11 +548,7 @@ namespace Tests {
         data.value = "1e2";
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::DecUInt8>(data, false, [](const Core::JSON::DecUInt8& v) {
-        #ifndef QUIRKS_MODE
             EXPECT_EQ(100u, v.Value());
-        #else
-            EXPECT_EQ(0x1E2, v.Value());
-        #endif
         });
     }
 
@@ -697,7 +680,6 @@ namespace Tests {
         ExecutePrimitiveJsonTest<Core::JSON::Buffer>(data, false, nullptr);
     }
 
-    #ifdef QUIRKS_MODE
     TEST(JSONParser, OpaqueObject)
     {
         TestData data;
@@ -746,7 +728,6 @@ namespace Tests {
             EXPECT_EQ(string{}, v.Value());
         });
     }
-    #endif
 
     TEST(JSONParser, EnumValue)
     {
@@ -778,5 +759,3 @@ ENUM_CONVERSION_BEGIN(Tests::JSONTestEnum)
 ENUM_CONVERSION_END(Tests::JSONTestEnum)
 
 } // WPEFramework
-
-#undef QUIRKS_MODE
