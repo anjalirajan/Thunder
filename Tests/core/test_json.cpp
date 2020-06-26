@@ -714,12 +714,12 @@ TEST(Core_JSON, BooleanArrayWithSquareBrackets)
 
 TEST(Core_JSON, FloatArrayWithSquareBrackets)
 {
-    string input = R"({"aa":[12.12]})";
-    string inputRequired = R"({"aa":[12.12]})";
+    string input = R"({"aa":[247.39]})";
+    string inputRequired = R"({"aa":[247.39]})";
     string output;
 
     WPEFramework::Core::ProxyType<ArrayTypeTest> command = WPEFramework::Core::ProxyType<ArrayTypeTest>::Create();
-    command->AA.Add(WPEFramework::Core::JSON::Float(12.12f,true));
+    command->AA.Add(WPEFramework::Core::JSON::Float(247.398f,true));
     WPEFramework::Core::JSON::Tester<1, ArrayTypeTest> parser;
 
     //ToString
@@ -733,12 +733,12 @@ TEST(Core_JSON, FloatArrayWithSquareBrackets)
 
 TEST(Core_JSON, DoubleArrayWithSquareBrackets)
 {
-    string input = R"({"ab":[12.12]})";
-    string inputRequired = R"({"ab":[12.12]})";
+    string input = R"({"ab":[32.24]})";
+    string inputRequired = R"({"ab":[32.24]})";
     string output;
 
     WPEFramework::Core::ProxyType<ArrayTypeTest> command = WPEFramework::Core::ProxyType<ArrayTypeTest>::Create();
-    command->AB.Add(WPEFramework::Core::JSON::Double(12.12, true));
+    command->AB.Add(WPEFramework::Core::JSON::Double(32.24, true));
     WPEFramework::Core::JSON::Tester<1, ArrayTypeTest> parser;
 
     //ToString
@@ -749,6 +749,7 @@ TEST(Core_JSON, DoubleArrayWithSquareBrackets)
     WPEFramework::Core::ProxyType<ArrayTypeTest> received = WPEFramework::Core::ProxyType<ArrayTypeTest>::Create();
     parser.FromString(input, received);
 }
+
 TEST(Core_JSON, simpleSet)
 {
     {
