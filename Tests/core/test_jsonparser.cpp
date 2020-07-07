@@ -557,14 +557,283 @@ namespace Tests {
         TestData data;
         data.key = "key";
         data.keyToPutInJson = "\"" + data.key + "\"";
-        data.value = "1.34";
+        data.value = "1.34f";
         data.valueToPutInJson = "\"" + data.value + "\"";
-        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [data](const Core::JSON::String& v) {
-           EXPECT_EQ(data.value, v.Value());
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            std::string res = value.str();
+            res += 'f';
+            EXPECT_EQ(data.value, res.c_str());
         });
     }
 
-    TEST(JSONParser, StringWithEscapeChars)
+    TEST(JSONParser, FloatingPointNumberWith_1_decimal_1_floatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "1.3";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, FloatingPointNumberWith_1_decimal_2_floatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "1.35";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, FloatingPointNumberWith_1_decimal_3_floatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "2.349";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, FloatingPointNumberWith_2_decimal_1_floatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "48.3";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, FloatingPointNumberWith_2_decimal_2_floatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "48.39";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, FloatingPointNumberWith_2_decimal_3_floatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "48.398";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, FloatingPointNumberWith_3_decimal_1_floatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "489.3";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, FloatingPointNumberWith_3_decimal_2_floatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "489.38";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, FloatingPointNumberWith_3_decimal_3_floatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "489.389";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(DISABLED_JSONParser, DoubleNumber)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "6.61914e+6";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, DoubleNumberWith_1_Decimal_1_FloatingPoint)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "3.5";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, DoubleNumberWith_1_Decimal_2_FloatingPoints)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "3.56";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, DoubleNumberWith_1_Decimal_3_FloatingPoints)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "3.567";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, DoubleNumberWith_2_Decimal_1_FloatingPoints)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "32.5";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, DoubleNumberWith_2_Decimal_2_FloatingPoints)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "32.59";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, DoubleNumberWith_2_Decimal_3_FloatingPoints)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "32.598";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+    TEST(JSONParser, DoubleNumberWith_3_Decimal_1_FloatingPoints)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "326.5";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, DoubleNumberWith_3_Decimal_2_FloatingPoints)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "326.56";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(JSONParser, DoubleNumberWith_3_Decimal_3_FloatingPoints)
+    {
+        TestData data;
+        data.key = "key";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "326.545";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
+            std::ostringstream value;
+            value << v;
+            EXPECT_EQ(data.value, value.str().c_str());
+        });
+    }
+
+    TEST(DISABLED_JSONParser, StringWithEscapeChars)
     {
         TestData data;
         data.key = "key";
