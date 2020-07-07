@@ -561,7 +561,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             std::string res = value.str();
             res += 'f';
             EXPECT_EQ(data.value, res.c_str());
@@ -577,7 +577,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -591,7 +591,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -605,7 +605,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -619,7 +619,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -633,7 +633,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -647,7 +647,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -661,7 +661,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -675,7 +675,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -689,7 +689,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Float>(data, true, [data](const Core::JSON::Float& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -703,7 +703,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -717,7 +717,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -731,7 +731,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -745,7 +745,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -759,7 +759,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -773,7 +773,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -787,10 +787,11 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
+
     TEST(JSONParser, DoubleNumberWith_3_Decimal_1_FloatingPoints)
     {
         TestData data;
@@ -800,7 +801,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -814,7 +815,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
@@ -828,7 +829,7 @@ namespace Tests {
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::Double>(data, true, [data](const Core::JSON::Double& v) {
             std::ostringstream value;
-            value << v;
+            value << v.Value();
             EXPECT_EQ(data.value, value.str().c_str());
         });
     }
