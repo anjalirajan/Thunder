@@ -1021,6 +1021,122 @@ namespace Tests {
         ExecutePrimitiveJsonTest<Core::JSON::EnumType<JSONTestEnum>>(data, false, nullptr);
     }
 
+    TEST(JSONParser, Variant)
+    {
+        WPEFramework::Core::JSON::Variant variant;
+        WPEFramework::Core::JSON::Variant variant1(std::numeric_limits<int32_t>::min());
+
+        WPEFramework::Core::JSON::Variant variant2(std::numeric_limits<int64_t>::min());
+        WPEFramework::Core::JSON::Variant variant3(std::numeric_limits<uint32_t>::min());
+        WPEFramework::Core::JSON::Variant variant4(std::numeric_limits<uint64_t>::min());
+        WPEFramework::Core::JSON::Variant variant5(true);
+        WPEFramework::Core::JSON::Variant variant6("varient");
+        WPEFramework::Core::JSON::Variant variant7("varient");
+        WPEFramework::Core::JSON::Variant variant8(variant4);
+
+        WPEFramework::Core::JSON::VariantContainer container;
+        WPEFramework::Core::JSON::Variant val1(10);
+        WPEFramework::Core::JSON::Variant val2(20);
+        WPEFramework::Core::JSON::Variant val3(30);
+        container.Set("key1", val1);
+        container.Set("key2", val2);
+        container.Set("key3", val3);
+        WPEFramework::Core::JSON::Variant variant9(container);
+        variant9.GetDebugString("key1");
+        variant9.Array();
+        variant2.Boolean(true);
+        WPEFramework::Core::JSON::Variant variant10 = variant4;
+
+        EXPECT_TRUE(variant5.Boolean());
+        EXPECT_FALSE(variant6.Boolean());
+
+        EXPECT_STREQ(variant6.String().c_str(),"varient");
+
+        variant1.Number(std::numeric_limits<uint32_t>::min());
+        variant6.String("Updated");
+    }
+
+    TEST(JSONParser, VariantContainer)
+    {
+        WPEFramework::Core::JSON::VariantContainer container;
+
+        WPEFramework::Core::JSON::Variant val1(10);
+        WPEFramework::Core::JSON::Variant val2(20);
+        WPEFramework::Core::JSON::Variant val3(30);
+        WPEFramework::Core::JSON::Variant val4(40);
+        WPEFramework::Core::JSON::Variant val5(50);
+        WPEFramework::Core::JSON::Variant val6(60);
+
+        container.Set("key1", val1);
+        container.Set("key2", val2);
+        container.Set("key3", val3);
+        container.Set("key4", val4);
+        container.Set("key5", val5);
+        container.Set("key6", val6);
+
+        EXPECT_EQ(val1.Number(), 10);
+        EXPECT_EQ((container.Get("key1")).String(), "10");
+        EXPECT_EQ((container["key5"]).String(), "50");
+
+        WPEFramework::Core::JSON::VariantContainer container1("\"key\":\"hello\"");
+
+        std::string serialized = "\"key\":\"checking\"";
+        WPEFramework::Core::JSON::VariantContainer container2(serialized);
+
+        WPEFramework::Core::JSON::VariantContainer container_new(container2);
+        WPEFramework::Core::JSON::VariantContainer container_copy = container_new;
+
+        std::string debugString = "            name=key1 type=Number value=10\n            name=key2 type=Number value=20\n            name=key3 type=Number value=30\n            name=key4 type=Number value=40\n            name=key5 type=Number value=50\n            name=key6 type=Number value=60\n";
+        EXPECT_STREQ(container.GetDebugString(3).c_str(), debugString.c_str());
+
+        container.ErrorDisplayMessage();
+    }
+
+    TEST(JSONParser, VariantContainerWithElements)
+    {
+        std::list<std::pair<string, WPEFramework::Core::JSON::Variant>> elements;
+
+        WPEFramework::Core::JSON::Variant val1(10);
+        WPEFramework::Core::JSON::Variant val2(20);
+        WPEFramework::Core::JSON::Variant val3(30);
+
+        elements.push_back(std::pair<std::string, WPEFramework::Core::JSON::Variant>("Key1", val1));
+        elements.push_back(std::pair<std::string, WPEFramework::Core::JSON::Variant>("Key2", val2));
+        elements.push_back(std::pair<std::string, WPEFramework::Core::JSON::Variant>("Key3", val3));
+
+        WPEFramework::Core::JSON::VariantContainer container(elements);
+
+        WPEFramework::Core::JSON::VariantContainer::Iterator it = container.Variants();
+        EXPECT_TRUE(it.Next());
+        EXPECT_TRUE(container.HasLabel("Key1"));
+        EXPECT_TRUE(it.IsValid());
+    }
+
+    TEST(JSONParser, Iterator)
+    {
+        std::list<std::pair<string, WPEFramework::Core::JSON::Variant>> elements;
+
+        WPEFramework::Core::JSON::Variant val1(10);
+        WPEFramework::Core::JSON::Variant val2(20);
+        WPEFramework::Core::JSON::Variant val3(30);
+
+        elements.push_back(std::pair<std::string, WPEFramework::Core::JSON::Variant>("Key1", val1));
+        elements.push_back(std::pair<std::string, WPEFramework::Core::JSON::Variant>("Key2", val2));
+        elements.push_back(std::pair<std::string, WPEFramework::Core::JSON::Variant>("Key3", val3));
+
+        WPEFramework::Core::JSON::VariantContainer::Iterator iterator;
+        WPEFramework::Core::JSON::VariantContainer::Iterator it(elements);
+        WPEFramework::Core::JSON::VariantContainer::Iterator itCopy(iterator);
+        WPEFramework::Core::JSON::VariantContainer::Iterator iteratorCopy = itCopy;
+
+        EXPECT_TRUE(it.Next());
+        EXPECT_TRUE(it.IsValid());
+        EXPECT_STREQ(it.Label(),"Key1");
+        EXPECT_STREQ(it.Current().String().c_str(),"10");
+
+        it.Reset();
+        EXPECT_FALSE(it.IsValid());
+    }
 } // Tests
 
 ENUM_CONVERSION_BEGIN(Tests::JSONTestEnum)
