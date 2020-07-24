@@ -144,6 +144,7 @@ public:
         , Z()
         , AA()
         , AB()
+        , AC()
     {
         Add(_T("a"), &A);
         Add(_T("b"), &B);
@@ -173,6 +174,7 @@ public:
         Add(_T("z"), &Z);
         Add(_T("aa"), &AA);
         Add(_T("ab"), &AB);
+        Add(_T("ac"), &AC);
     }
 
     ~ArrayTypeTest()
@@ -212,6 +214,8 @@ public:
 
     WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::Float> AA;
     WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::Double> AB;
+
+    WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::Variant> AC;
 };
 
 TEST(Core_JSON, DecUInt8ArrayWithSquareBrackets)
@@ -750,6 +754,21 @@ TEST(Core_JSON, DoubleArrayWithSquareBrackets)
     parser.FromString(input, received);
 }
 
+TEST(Core_JSON, VariantArrayWithSquareBrackets)
+{
+    string input = R"({"ac":[10]})";
+    //string inputRequired = R"({"ac":[10]})";
+    string output;
+
+    //WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::Variant> AC
+    WPEFramework::Core::ProxyType<ArrayTypeTest> command = WPEFramework::Core::ProxyType<ArrayTypeTest>::Create();
+    command->AC.Add(WPEFramework::Core::JSON::Variant(10));
+    WPEFramework::Core::JSON::Tester<1, ArrayTypeTest> parser;
+
+    //FromString
+    WPEFramework::Core::ProxyType<ArrayTypeTest> received = WPEFramework::Core::ProxyType<ArrayTypeTest>::Create();
+    parser.FromString(input, received);
+}
 TEST(Core_JSON, simpleSet)
 {
     {

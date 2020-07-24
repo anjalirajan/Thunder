@@ -1021,6 +1021,7 @@ namespace Tests {
         ExecutePrimitiveJsonTest<Core::JSON::EnumType<JSONTestEnum>>(data, false, nullptr);
     }
 
+
     TEST(JSONParser, Variant)
     {
         WPEFramework::Core::JSON::Variant variant;
@@ -1030,8 +1031,20 @@ namespace Tests {
         WPEFramework::Core::JSON::Variant variant3(std::numeric_limits<uint32_t>::min());
         WPEFramework::Core::JSON::Variant variant4(std::numeric_limits<uint64_t>::min());
         WPEFramework::Core::JSON::Variant variant5(true);
-        WPEFramework::Core::JSON::Variant variant6("varient");
-        WPEFramework::Core::JSON::Variant variant7("varient");
+
+        EXPECT_EQ(variant1.Number(), 0);
+        EXPECT_EQ(variant2.Number(), 0);
+        EXPECT_EQ(variant3.Number(), 0);
+        EXPECT_EQ(variant4.Number(), 0);
+
+        const TCHAR text[] = "varient";
+        WPEFramework::Core::JSON::Variant variant6(text);
+        EXPECT_STREQ(variant6.String().c_str(),"varient");
+
+        std::string msg = "varient";
+        WPEFramework::Core::JSON::Variant variant7(msg);
+        EXPECT_STREQ(variant7.String().c_str(),"varient");
+
         WPEFramework::Core::JSON::Variant variant8(variant4);
 
         WPEFramework::Core::JSON::VariantContainer container;
@@ -1043,10 +1056,11 @@ namespace Tests {
         container.Set("key3", val3);
         WPEFramework::Core::JSON::Variant variant9(container);
         variant9.GetDebugString("key1");
-        variant9.Array();
+
         variant2.Boolean(true);
         WPEFramework::Core::JSON::Variant variant10 = variant4;
 
+        variant5.Content();
         EXPECT_TRUE(variant5.Boolean());
         EXPECT_FALSE(variant6.Boolean());
 
@@ -1054,6 +1068,9 @@ namespace Tests {
 
         variant1.Number(std::numeric_limits<uint32_t>::min());
         variant6.String("Updated");
+        EXPECT_STREQ(variant6.String().c_str(),"Updated");
+
+        variant6.Boolean(true);
     }
 
     TEST(JSONParser, VariantContainer)
@@ -1078,18 +1095,89 @@ namespace Tests {
         EXPECT_EQ((container.Get("key1")).String(), "10");
         EXPECT_EQ((container["key5"]).String(), "50");
 
-        WPEFramework::Core::JSON::VariantContainer container1("\"key\":\"hello\"");
+        WPEFramework::Core::JSON::Variant variant1 = container["key5"];
+        const WPEFramework::Core::JSON::Variant variant2 =  container["key5"];
 
-        std::string serialized = "\"key\":\"checking\"";
+        EXPECT_EQ(variant1.String(), "50");
+        EXPECT_EQ(variant2.String(), "50");
+
+        std::string serialize = "{\"key1\":\"hello\"}";
+        WPEFramework::Core::JSON::VariantContainer container1(serialize);
+        std::string text;
+        container1.ToString(text);
+        EXPECT_STREQ(text.c_str(),serialize.c_str());
+
+        serialize = "\"key1\":\"hello\""; //Trigger a call to ErrorDisplayMessage() with purposefully created error condition.
+        WPEFramework::Core::JSON::VariantContainer errorContainer(serialize);
+        errorContainer.ToString(text);
+
+        const TCHAR serialized[] = "{\"key2\":\"checking\"}";
         WPEFramework::Core::JSON::VariantContainer container2(serialized);
+        container2.ToString(text);
+        EXPECT_STREQ(text.c_str(), serialized);
 
         WPEFramework::Core::JSON::VariantContainer container_new(container2);
         WPEFramework::Core::JSON::VariantContainer container_copy = container_new;
 
         std::string debugString = "            name=key1 type=Number value=10\n            name=key2 type=Number value=20\n            name=key3 type=Number value=30\n            name=key4 type=Number value=40\n            name=key5 type=Number value=50\n            name=key6 type=Number value=60\n";
         EXPECT_STREQ(container.GetDebugString(3).c_str(), debugString.c_str());
+    }
 
-        container.ErrorDisplayMessage();
+    TEST(JSONParser, VariantDebugStringNumber)
+    {
+        WPEFramework::Core::JSON::Variant variant(10);
+        std::string debugString = "            [0] name=hello type=Number value=10\n";
+        EXPECT_STREQ(variant.GetDebugString("hello",3,0).c_str(), debugString.c_str());
+    }
+
+    TEST(JSONParser, VariantDebugStringEmpty)
+    {
+        WPEFramework::Core::JSON::Variant variant;
+
+        std::string debugString = "    [0] name=hello type=Empty value=null\n";
+        EXPECT_STREQ(variant.GetDebugString("hello", 1, 0).c_str(), debugString.c_str());
+    }
+
+    TEST(JSONParser, VariantDebugStringBoolean)
+    {
+        WPEFramework::Core::JSON::Variant variant(true);
+
+        std::string debugString =  "    [0] name=hello type=Boolean value=true\n";
+        EXPECT_STREQ(variant.GetDebugString("hello", 1, 0).c_str(), debugString.c_str());
+    }
+
+    TEST(JSONParser, VariantDebugStringString)
+    {
+        WPEFramework::Core::JSON::Variant variant("value1");
+
+        std::string debugString = "    [0] name=hello type=String value=value1\n";
+        EXPECT_STREQ(variant.GetDebugString("hello", 1, 0).c_str(), debugString.c_str());
+    }
+
+    TEST(JSONParser, VariantDebugStringArray)
+    {
+        WPEFramework::Core::JSON::ArrayType<WPEFramework::Core::JSON::Variant> array;
+        array.Add(WPEFramework::Core::JSON::Variant(10));
+        WPEFramework::Core::JSON::Variant variant(array);
+
+        std::string debugString = "    [0] name=hello type=Array value=[\n        [0] type=Number value=10\n   ]\n";
+        EXPECT_STREQ(variant.GetDebugString("hello", 1, 0).c_str(), debugString.c_str());
+    }
+
+    TEST(JSONParser, VariantDebugStringObject)
+    {
+        WPEFramework::Core::JSON::VariantContainer container;
+        WPEFramework::Core::JSON::Variant val1(10);
+        WPEFramework::Core::JSON::Variant val2(20);
+        WPEFramework::Core::JSON::Variant val3(30);
+
+        container.Set("key1", val1);
+        container.Set("key2", val2);
+        container.Set("key3", val3);
+        WPEFramework::Core::JSON::Variant variant(container);
+
+        std::string debugString = "    [0] name=hello type=Object value={\n        name=key1 type=Number value=10\n        name=key2 type=Number value=20\n        name=key3 type=Number value=30\n   }\n";
+        EXPECT_STREQ(variant.GetDebugString("hello", 1, 0).c_str(), debugString.c_str());
     }
 
     TEST(JSONParser, VariantContainerWithElements)
@@ -1112,7 +1200,7 @@ namespace Tests {
         EXPECT_TRUE(it.IsValid());
     }
 
-    TEST(JSONParser, Iterator)
+    TEST(JSONParser, VariantContainerIterator)
     {
         std::list<std::pair<string, WPEFramework::Core::JSON::Variant>> elements;
 
