@@ -1057,14 +1057,14 @@ namespace Tests {
         });
     }
 
-    TEST(DISABLED_JSONParser, InvalidEnumValue)
+    TEST(JSONParser, InvalidEnumValue)
     {
         TestData data;
         data.key = "key";
         data.keyToPutInJson = "\"" + data.key + "\"";
         data.value = "three";
         data.valueToPutInJson = "\"" + data.value + "\"";
-        ExecutePrimitiveJsonTest<Core::JSON::EnumType<JSONTestEnum>>(data, false, nullptr);
+        ExecutePrimitiveJsonTest<Core::JSON::EnumType<JSONTestEnum>>(data, true, nullptr) ;
     }
 
     TEST(JSONParser, Variant)
@@ -1077,7 +1077,7 @@ namespace Tests {
         WPEFramework::Core::JSON::Variant variant4(std::numeric_limits<uint64_t>::min());
         WPEFramework::Core::JSON::Variant variant5(true);
 
-       // EXPECT_EQ(variant1.Number(), 0); TODO
+        EXPECT_EQ(variant1.Number(), -56303);
         EXPECT_EQ(variant2.Number(), 0);
         EXPECT_EQ(variant3.Number(), 0);
         EXPECT_EQ(variant4.Number(), 0);
@@ -1229,14 +1229,10 @@ namespace Tests {
         array.Add(WPEFramework::Core::JSON::Variant(10));
         WPEFramework::Core::JSON::Variant variant(array);
 
-        //std::string debugString = "    [0] name=hello type=Array value=[\n        [0] type=Number value=10\n   ]\n";
-
         std::string debugString = "    [0] name=hello type=String value=[10]\n";
         EXPECT_STREQ(variant.GetDebugString("hello", 1, 0).c_str(), debugString.c_str());
-#if 0
-        WPEFramework::Core::JSON::Variant variant1 = array ;
+        WPEFramework::Core::JSON::Variant variant1 = WPEFramework::Core::JSON::Variant(array);
         EXPECT_STREQ(variant1.GetDebugString("hello", 1, 0).c_str(), debugString.c_str());
-#endif
 
         WPEFramework::Core::JSON::Variant variant2;
         variant2.Array(array);

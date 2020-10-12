@@ -92,8 +92,21 @@ TEST (test_file, directory)
     EXPECT_FALSE(dirOne.Create());
     EXPECT_FALSE(dirThree.IsValid());
     EXPECT_TRUE(dirOne.Next());
-    EXPECT_EQ(dirOne.Current(), "home/file/.");
-    EXPECT_EQ(dirOne.Name(), ".");
+
+    char buffer[15];
+    string currenPath = "..";
+
+    if ((dirOne.Current(), buffer) == 0) {
+        snprintf(buffer,(path.size() + currenPath.size() + 2), "%s/%s",path.c_str(), currenPath.c_str());
+        EXPECT_EQ(dirOne.Current(), buffer);
+        EXPECT_EQ(dirOne.Name(), currenPath.c_str());
+    } else {
+        currenPath = ".";
+        snprintf(buffer,(path.size() + currenPath.size() + 2), "%s/%s",path.c_str(), currenPath.c_str());
+        EXPECT_EQ(dirOne.Current(), buffer);
+        EXPECT_EQ(dirOne.Name(), currenPath.c_str());
+    }
+
     EXPECT_TRUE(dirOne.IsDirectory());
     dirOne.Reset();
     EXPECT_TRUE(dirOne.Next());
