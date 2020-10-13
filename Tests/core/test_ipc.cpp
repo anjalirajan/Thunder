@@ -403,6 +403,7 @@ namespace Tests {
         }
         testAdmin.Sync("done testing");
     }
+
     TEST(Core_IPC, MultiChannel)
     {
         std::string connector = _T("/tmp/testserver2");

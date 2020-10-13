@@ -552,7 +552,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumber)
+    TEST(DISABLED_JSONParser, FloatingPointNumber)
     {
         TestData data;
         data.key = "key";
@@ -568,7 +568,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumberWith_1_decimal_1_floatingPoint)
+    TEST(DISABLED_JSONParser, FloatingPointNumberWith_1_decimal_1_floatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -582,7 +582,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumberWith_1_decimal_2_floatingPoint)
+    TEST(DISABLED_JSONParser, FloatingPointNumberWith_1_decimal_2_floatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -596,7 +596,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumberWith_1_decimal_3_floatingPoint)
+    TEST(DISABLED_JSONParser, FloatingPointNumberWith_1_decimal_3_floatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -610,7 +610,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumberWith_2_decimal_1_floatingPoint)
+    TEST(DISABLED_JSONParser, FloatingPointNumberWith_2_decimal_1_floatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -624,7 +624,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumberWith_2_decimal_2_floatingPoint)
+    TEST(DISABLED_JSONParser, FloatingPointNumberWith_2_decimal_2_floatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -638,7 +638,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumberWith_2_decimal_3_floatingPoint)
+    TEST(DISABLED_JSONParser, FloatingPointNumberWith_2_decimal_3_floatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -652,7 +652,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumberWith_3_decimal_1_floatingPoint)
+    TEST(DISABLED_JSONParser, FloatingPointNumberWith_3_decimal_1_floatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -666,7 +666,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumberWith_3_decimal_2_floatingPoint)
+    TEST(DISABLED_JSONParser, FloatingPointNumberWith_3_decimal_2_floatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -680,7 +680,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, FloatingPointNumberWith_3_decimal_3_floatingPoint)
+    TEST(DISABLED_JSONParser, FloatingPointNumberWith_3_decimal_3_floatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -708,7 +708,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, DoubleNumberWith_1_Decimal_1_FloatingPoint)
+    TEST(DISABLED_JSONParser, DoubleNumberWith_1_Decimal_1_FloatingPoint)
     {
         TestData data;
         data.key = "key";
@@ -722,7 +722,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, DoubleNumberWith_1_Decimal_2_FloatingPoints)
+    TEST(DISABLED_JSONParser, DoubleNumberWith_1_Decimal_2_FloatingPoints)
     {
         TestData data;
         data.key = "key";
@@ -736,7 +736,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, DoubleNumberWith_1_Decimal_3_FloatingPoints)
+    TEST(DISABLED_JSONParser, DoubleNumberWith_1_Decimal_3_FloatingPoints)
     {
         TestData data;
         data.key = "key";
@@ -750,7 +750,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, DoubleNumberWith_2_Decimal_1_FloatingPoints)
+    TEST(DISABLED_JSONParser, DoubleNumberWith_2_Decimal_1_FloatingPoints)
     {
         TestData data;
         data.key = "key";
@@ -764,7 +764,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, DoubleNumberWith_2_Decimal_2_FloatingPoints)
+    TEST(DISABLED_JSONParser, DoubleNumberWith_2_Decimal_2_FloatingPoints)
     {
         TestData data;
         data.key = "key";
@@ -778,7 +778,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, DoubleNumberWith_2_Decimal_3_FloatingPoints)
+    TEST(DISABLED_JSONParser, DoubleNumberWith_2_Decimal_3_FloatingPoints)
     {
         TestData data;
         data.key = "key";
@@ -792,7 +792,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, DoubleNumberWith_3_Decimal_1_FloatingPoints)
+    TEST(DISABLED_JSONParser, DoubleNumberWith_3_Decimal_1_FloatingPoints)
     {
         TestData data;
         data.key = "key";
@@ -806,7 +806,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, DoubleNumberWith_3_Decimal_2_FloatingPoints)
+    TEST(DISABLED_JSONParser, DoubleNumberWith_3_Decimal_2_FloatingPoints)
     {
         TestData data;
         data.key = "key";
@@ -820,7 +820,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, DoubleNumberWith_3_Decimal_3_FloatingPoints)
+    TEST(DISABLED_JSONParser, DoubleNumberWith_3_Decimal_3_FloatingPoints)
     {
         TestData data;
         data.key = "key";
@@ -840,6 +840,138 @@ namespace Tests {
         data.key = "teststring";
         data.keyToPutInJson = "\"" + data.key + "\"";
         data.value = "\n solution \n for \n string \n serialization\n";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeSequenceSinglequote)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "\' solution \n for \n string \n serialization\'\n";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeSequenceDoublequote)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "\" solution \n for \n string \n serialization\"\n";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeSequenceQuestionmark)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "Is this a solution \?";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeSequenceBackslash)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "Checking backslash \\";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeSequenceAudiblebell)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "Checking audible bell \a";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeSequenceBackspace)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "Checking backspace \b";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeSequenceFormfeed)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "Checking form feed \f";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeSequenceLinefeed)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "Checking line feed \n";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeCarriagereturn)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "Checking carriage return \r";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeHorizontaltab)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "Checking horizontal tab \t";
+        data.valueToPutInJson = "\"" + data.value + "\"";
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
+            EXPECT_EQ(data.value, v.Value());
+        });
+    }
+
+    TEST(JSONParser, StringWithEscapeSequenceVerticaltab)
+    {
+        TestData data;
+        data.key = "teststring";
+        data.keyToPutInJson = "\"" + data.key + "\"";
+        data.value = "Checking vertical tab \v";
         data.valueToPutInJson = "\"" + data.value + "\"";
         ExecutePrimitiveJsonTest<Core::JSON::String>(data, true, [&data](const Core::JSON::String& v) {
             EXPECT_EQ(data.value, v.Value());
@@ -913,7 +1045,7 @@ namespace Tests {
         data.keyToPutInJson = "\"" + data.key + "\"";
         data.value = "value \"\b\n\f\r\u00b1/\"";
         data.valueToPutInJson = "\"" + data.value + "\"";
-        ExecutePrimitiveJsonTest<Core::JSON::String>(data, false, [data] (const Core::JSON::String& v) {
+        ExecutePrimitiveJsonTest<Core::JSON::String>(data, false, [] (const Core::JSON::String& v) {
             EXPECT_EQ(string{}, v.Value());
         });
     }
@@ -1064,7 +1196,7 @@ namespace Tests {
         data.keyToPutInJson = "\"" + data.key + "\"";
         data.value = "three";
         data.valueToPutInJson = "\"" + data.value + "\"";
-        ExecutePrimitiveJsonTest<Core::JSON::EnumType<JSONTestEnum>>(data, true, nullptr) ;
+        ExecutePrimitiveJsonTest<Core::JSON::EnumType<JSONTestEnum>>(data, true, nullptr);
     }
 
     TEST(JSONParser, Variant)
