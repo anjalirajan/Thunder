@@ -25,6 +25,7 @@ add_executable(${TEST_RUNNER_NAME}
    test_dataelement.cpp
    test_doorbell.cpp
    test_event.cpp
+   test_ipcclient.cpp
    test_hex2strserialization.cpp
    test_enumerate.cpp
    test_filesystem.cpp
@@ -40,7 +41,7 @@ add_executable(${TEST_RUNNER_NAME}
    test_logging.cpp
    test_measurementtype.cpp
    test_messageException.cpp
-   #test_networkinfo.cpp
+   test_networkinfo.cpp
    test_nodeid.cpp
    test_numbertype.cpp
    test_optional.cpp

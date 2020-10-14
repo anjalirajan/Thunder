@@ -76,7 +76,7 @@ TEST (test_file, file_functions)
     EXPECT_FALSE(fileObj1.IsEncrypted());
     uint64_t size = 0;
     EXPECT_EQ(fileObj1.Size(), size);
-    EXPECT_EQ(fileObj1.DuplicateHandle(), 10);
+    EXPECT_EQ(fileObj1.DuplicateHandle(), 11);
     EXPECT_TRUE(fileObj1.Move("newFile.txt"));
 }
 

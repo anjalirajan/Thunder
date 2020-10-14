@@ -17,7 +17,10 @@
 
 find_package(GTest REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fkeep-static-functions -fkeep-inline-functions")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fkeep-inline-functions -fkeep-static-functions")
+set(CMAKE_EXE_LINKER_FLAGS "-lgcov")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+
 include_directories(${GTEST_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Source)
 

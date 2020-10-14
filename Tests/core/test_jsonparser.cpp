@@ -858,7 +858,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, StringWithEscapeSequenceDoublequote)
+    TEST(DISABLED_JSONParser, StringWithEscapeSequenceDoublequote)
     {
         TestData data;
         data.key = "teststring";
@@ -882,7 +882,7 @@ namespace Tests {
         });
     }
 
-    TEST(JSONParser, StringWithEscapeSequenceBackslash)
+    TEST(DISABLED_JSONParser, StringWithEscapeSequenceBackslash)
     {
         TestData data;
         data.key = "teststring";
