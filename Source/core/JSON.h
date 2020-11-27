@@ -130,7 +130,7 @@ namespace Core {
 
                 while (handled < size) {
 
-		    uint16_t payload = static_cast<uint16_t>(std::min((size - handled) + 1, static_cast<uint32_t>(0xFFFF)));
+                    uint16_t payload = static_cast<uint16_t>(std::min((size - handled) + 1, static_cast<uint32_t>(0xFFFF)));
 
                     // Deserialize object
                     uint16_t loaded = static_cast<IElement&>(realObject).Deserialize(&(text.c_str()[handled]), payload, offset, error);
@@ -138,7 +138,7 @@ namespace Core {
                     ASSERT(loaded <= payload);
                     DEBUG_VARIABLE(loaded);
 
-		    handled += loaded;
+		            handled += loaded;
                 }
 
                 if (offset != 0 && error.IsSet() == false) {
@@ -318,14 +318,14 @@ namespace Core {
                 realObject.Clear();
 
                 while (size != handled) {
-			uint16_t partial = static_cast<uint16_t>(std::min(size - handled, static_cast<uint32_t>(0xFFFF)));
+                    uint16_t partial = static_cast<uint16_t>(std::min(size - handled, static_cast<uint32_t>(0xFFFF)));
 
-                        // Deserialize object
-                        uint16_t loaded = static_cast<IMessagePack&>(realObject).Deserialize(&(stream[handled]), partial, offset);
+                    // Deserialize object
+                    uint16_t loaded = static_cast<IMessagePack&>(realObject).Deserialize(&(stream[handled]), partial, offset);
 
-                        ASSERT(loaded <= partial);
-                        DEBUG_VARIABLE(loaded);
-                        handled += loaded;
+                    ASSERT(loaded <= partial);
+                    DEBUG_VARIABLE(loaded);
+                    handled += loaded;
                 }
 
                 if (offset) {
@@ -1060,6 +1060,42 @@ namespace Core {
             }
 
         private:
+
+            uint16_t Convert(char stream[], const uint16_t maxLength, uint32_t& offset, uint16_t& num) const
+            {
+                uint16_t loaded = 0;
+                static char result[100];
+                if (offset == 0)
+                {
+                    int dVal, dec;
+                    int i = 0;
+
+                    dVal = _value;
+                    dec = (int)((_value) * 100) % 100;
+
+                    memset(result, 0, 100);
+                    result[i++] = (dec % 10) + '0';
+                    result[i++] = (dec / 10) + '0';
+                    result[i++] = '.';
+
+                    while (dVal > 0)
+                    {
+                        result[i] = (dVal % 10) + '0';
+                        dVal /= 10;
+                        i++;
+                    }
+
+                    if (num != strlen(result))
+                        num = strlen(result);
+                }
+
+                int index = (num-(offset+1));
+                stream[loaded++] = result[index];
+                offset += loaded;
+
+                return loaded;
+            }
+
             // IElement iface:
             // If this should be serialized/deserialized, it is indicated by a MinSize > 0)
             uint16_t Serialize(char stream[], const uint16_t maxLength, uint32_t& offset) const override
@@ -1068,23 +1104,36 @@ namespace Core {
 
                 ASSERT(maxLength > 0);
 
-                if ((_set & UNDEFINED) != 0 || 
-                    std::isinf(_value) ||
-                    std::isnan(_value)) 
-                {
-                    auto len = strlen(IElement::NullTag);
-                    while(loaded < len)
+                char res[50];
+                static uint16_t num = std::snprintf(res,maxLength,"%g",_value);
+
+                while ((offset < num) && (loaded < maxLength)) {
+                    if ((_set & UNDEFINED) != 0 ||
+                        std::isinf(_value) ||
+                        std::isnan(_value))
                     {
-                        stream[loaded] = IElement::NullTag[loaded];
-                        loaded++;
+                        auto len = strlen(IElement::NullTag);
+                        while(loaded < len)
+                        {
+                            stream[loaded] = IElement::NullTag[loaded];
+                            loaded++;
+                        }
+                    }
+                    else if (((_set & UNDEFINED) == 0) && (loaded < maxLength))
+                    {
+                            loaded += Convert(&(stream[loaded]), maxLength, offset, num);
+                    }
+                    else //TODO Need to cross check with proper use case.
+                    {
+                        auto num = std::snprintf(stream,maxLength,"%g",_value);
+                        loaded = num > 0 ? num : 0;
                     }
                 }
-                else
-                {
-                    auto num = std::snprintf(stream,maxLength,"%g",_value);
-                    loaded = num > 0 ? num : 0;
+
+                if (offset == num){
+                   offset = 0;
                 }
-                
+
                 return loaded;
             }
             

@@ -24,5 +24,9 @@ set(CMAKE_CXX_STANDARD 11)
 
 enable_testing()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fkeep-inline-functions -fkeep-static-functions")
+set(CMAKE_EXE_LINKER_FLAGS "-lgcov")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+
 add_subdirectory(core)
 add_subdirectory(tests)
