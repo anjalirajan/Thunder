@@ -71,6 +71,7 @@ IPTestAdministrator::IPTestAdministrator(OtherSideMain otherSideMain)
       // TODO: should we clean up stuff here or not?
       //WPEFramework::Core::Singleton::Dispose();
 
+<<<<<<< HEAD
       // Make sure no gtest cleanup code is called (summary etc).
 <<<<<<< HEAD
       #ifdef WITH_CODE_COVERAGE
@@ -80,6 +81,9 @@ IPTestAdministrator::IPTestAdministrator(OtherSideMain otherSideMain)
 =======
       //__gcov_flush();
 >>>>>>> 9440cc04... [TESTS] Updates tests for qemu VM run
+=======
+      __gcov_flush();
+>>>>>>> a9989f6f... [TEST] Enabled the coverage flushing code.
       abort();
    } else {
       // In parent process, store child pid, so we can kill it later.
