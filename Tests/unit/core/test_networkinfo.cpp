@@ -25,46 +25,54 @@
 using namespace WPEFramework;
 using namespace WPEFramework::Core;
 
-TEST(test_ipv4addressiterator, simple_ipv4addressiterator)
-{
-   AdapterIterator adapters;
-   AdapterIterator adapter("eth0");
-   IPV4AddressIterator result;
-   
-   result.Next();
-   //EXPECT_EQ(adapters.Index(),adapters.Index()); TODO
-   while (adapters.Next() == true) {
-       if (adapters.IsValid() == true) {
-           IPV4AddressIterator index(adapters.IPV4Addresses());
-           EXPECT_EQ(index.Count(),index.Count());
-           EXPECT_STREQ(adapters.Name().c_str(),adapters.Name().c_str());
-           while (index.Next() == true) {
-               NodeId current(index.Address());
-               IPNode currentNode(index.Address());
-               EXPECT_EQ(adapter.Add(currentNode),ERROR_NONE);
-               EXPECT_EQ(adapter.Gateway(currentNode,current),ERROR_NONE);
-               EXPECT_EQ(adapter.Delete(currentNode),ERROR_NONE);
-               EXPECT_EQ(adapter.Broadcast(current),ERROR_NONE);
-               if ((current.IsMulticast() == false) && (current.IsLocalInterface() == false)) {
-                   result = index;
-                   EXPECT_STREQ(current.HostName().c_str(),current.HostName().c_str());
-                   EXPECT_STREQ(current.HostAddress().c_str(),current.HostAddress().c_str());
-               }
-           }
-       }
-   }
-
-   IPV4AddressIterator ipv4addressiterator1;
-   ipv4addressiterator1 = result;
-   IPV4AddressIterator ipv4addressiterator2(result);
-   ipv4addressiterator1.Reset();
-}
-
-TEST(test_ipv6addressiterator, simple_ipv6addressiterator)
+TEST(test_Adapteriterator, ipv4_simple_Adapter)
 {
     AdapterIterator adapters;
+    while (adapters.Next() == true) {
+        if (adapters.IsValid() == true) {
+            IPV4AddressIterator index(adapters.IPV4Addresses());
+            EXPECT_EQ(index.Count(),index.Count());
+            EXPECT_STREQ(adapters.Name().c_str(),adapters.Name().c_str());
+        }
+    }
+}
+
+TEST(test_Adapteriterator, ipv4_ethernet_Adapter)
+{
+    AdapterIterator adapter("eth0");
+    IPV4AddressIterator index(adapter.IPV4Addresses());
+
+    IPV4AddressIterator result;
+    result.Next();
+
+    while (index.Next() == true) {
+        NodeId current(index.Address());
+        IPNode currentNode(index.Address());
+   
+        if ((current.IsMulticast() == false) && (current.IsLocalInterface() == false)) {
+            result = index;
+            EXPECT_STREQ(current.HostName().c_str(),current.HostName().c_str());
+            EXPECT_STREQ(current.HostAddress().c_str(),current.HostAddress().c_str());
+        }
+        EXPECT_EQ(adapter.Add(currentNode),ERROR_NONE);
+        EXPECT_EQ(adapter.Gateway(currentNode,current),ERROR_NONE);
+        EXPECT_EQ(adapter.Delete(currentNode),ERROR_NONE);
+        EXPECT_EQ(adapter.Broadcast(current),ERROR_NONE);
+    }
+
+    IPV4AddressIterator ipv4addressiterator1;
+    ipv4addressiterator1 = result;
+    IPV4AddressIterator ipv4addressiterator2(result);
+    ipv4addressiterator1.Reset();
+}
+
+TEST(test_ipv6addressiterator, ipv6_simple_Adapter)
+{
+    AdapterIterator adapters;
+
     IPV6AddressIterator result;
     result.Next();
+
     while (adapters.Next() == true) {
         IPV6AddressIterator index(adapters.IPV6Addresses());
         EXPECT_EQ(index.Count(),index.Count());
@@ -78,22 +86,23 @@ TEST(test_ipv6addressiterator, simple_ipv6addressiterator)
             }
         }
     }
+
     IPV6AddressIterator ipv6addressiterator1;
     ipv6addressiterator1 = result;
     IPV6AddressIterator ipv6addressiterator2(result);
     ipv6addressiterator1.Reset();
 }
 
-TEST(DISABLED_test_adapteriterator, simple_adapteriterator)
+TEST(test_adapteriterator, simple_adapteriterator)
 {
     AdapterIterator adapter("eth0");
     AdapterIterator adapter1 = adapter;
     AdapterIterator adapter2(adapter);
     AdapterIterator adapter3("test0");
 
-    EXPECT_TRUE(adapter.IsUp());
-    EXPECT_TRUE(adapter.IsRunning());
     adapter.Up(true);
+    EXPECT_TRUE(adapter.IsUp());
+    EXPECT_FALSE(adapter.IsRunning());
     adapter.Up(false);
 
     EXPECT_EQ(adapter.Count(),adapter.Count());
@@ -104,8 +113,10 @@ TEST(DISABLED_test_adapteriterator, simple_adapteriterator)
     adapter.MACAddress(buffer,32);
 }
 
-TEST(DISABLED_test_adapterobserver, simple_adapterobserver)
+TEST(test_adapterobserver, simple_adapterobserver)
 {
     AdapterObserver::INotification* callback;
     AdapterObserver observer(callback);
+
+    Core::Singleton::Dispose();
 }
