@@ -95,13 +95,14 @@ TEST (test_file, directory)
 
     char buffer[15];
     string currenPath = "..";
+    snprintf(buffer,(path.size() + currenPath.size() + 2), "%s/%s",path.c_str(), currenPath.c_str());
 
-    if ((dirOne.Current(), buffer) == 0) {
-        snprintf(buffer,(path.size() + currenPath.size() + 2), "%s/%s",path.c_str(), currenPath.c_str());
+    if ((dirOne.Current().compare(buffer)) == 0) {
         EXPECT_EQ(dirOne.Current(), buffer);
         EXPECT_EQ(dirOne.Name(), currenPath.c_str());
     } else {
         currenPath = ".";
+        memset(buffer, 0, sizeof buffer);
         snprintf(buffer,(path.size() + currenPath.size() + 2), "%s/%s",path.c_str(), currenPath.c_str());
         EXPECT_EQ(dirOne.Current(), buffer);
         EXPECT_EQ(dirOne.Name(), currenPath.c_str());
