@@ -239,6 +239,7 @@ namespace Core {
         void AdminUnlock();
         void Reevaluate();
         uint32_t SignalLock(const uint32_t waitTime);
+        void Waiting();
 
     private:
         enum state {
