@@ -27,17 +27,15 @@
 #include <string.h>
 #include <core/core.h>
 
-#ifdef WITH_CODE_COVERAGE
-extern "C" void __gcov_flush();
-#endif
-
-
 // TODO: What is going on here??
 //  https://github.com/google/googletest/issues/2328
 #include <cxxabi.h>
 __gnu_cxx::recursive_init_error::~recursive_init_error()
 {
 }
+
+extern "C" void __gcov_flush();
+#endif
 
 const uint32_t g_maxTimeOut = 2; // In seconds.
 
@@ -72,6 +70,7 @@ IPTestAdministrator::IPTestAdministrator(OtherSideMain otherSideMain)
       //WPEFramework::Core::Singleton::Dispose();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
       // Make sure no gtest cleanup code is called (summary etc).
 <<<<<<< HEAD
       #ifdef WITH_CODE_COVERAGE
@@ -82,6 +81,8 @@ IPTestAdministrator::IPTestAdministrator(OtherSideMain otherSideMain)
       //__gcov_flush();
 >>>>>>> 9440cc04... [TESTS] Updates tests for qemu VM run
 =======
+=======
+>>>>>>> 13558760cda1f43b86cde525600b10bae0634eb1
       __gcov_flush();
 >>>>>>> a9989f6f... [TEST] Enabled the coverage flushing code.
       abort();
